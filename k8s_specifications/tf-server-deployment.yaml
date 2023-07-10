@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tf-server
+  name: tf-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tf-server
+  template:
+    metadata:
+      labels:
+        app: tf-server
+    spec:
+      containers:
+        - image: tensorflow/serving:latest #emacski/tensorflow-serving:latest-linux_arm64
+          name: tf-server
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8501
+              name: tf-server

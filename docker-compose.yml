@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: sentiment-analysis-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    depends_on:
+      - tf-server
+    volumes:
+      - ./out:/models/sentiment_analysis/1/
+    environment:
+      - TF_SERVER_URL=http://tf-server:8501/
+    command: python wait_for_tfserver.py
+
+  tf-server:
+    container_name: tf-server
+    image: emacski/tensorflow-serving:latest-linux_arm64 # tensorflow/serving # Utiliser cette image pour mac M1 ->  emacski/tensorflow-serving:latest-linux_arm64
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./tf-saved-model/1:/models/sentiment_analysis/1/
+    command: >
+      tensorflow_model_server 
+      --port=8500 
+      --rest_api_port=8501 
+      --model_name=sentiment_analysis 
+      --model_base_path=/models/sentiment_analysis/

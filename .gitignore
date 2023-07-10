@@ -1,0 +1,7 @@
+.vscode
+.idea/
+out/
+data/
+venv/
+*.iml
+tf-saved-model/

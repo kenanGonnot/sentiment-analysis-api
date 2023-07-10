@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sentiment-analysis
+  name: sentiment-analysis
+spec:
+  type: LoadBalancer
+  ports:
+  - name: sentiment-analysis-service
+    port: 5000
+    targetPort: 5000
+  selector:
+    app: sentiment-analysis
+  
